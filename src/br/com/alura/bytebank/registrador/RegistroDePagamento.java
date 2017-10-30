@@ -8,21 +8,41 @@ import java.util.List;
 
 public class RegistroDePagamento {
 
-    private final static List<Pagamento> psr = new ArrayList<>();
+    private final List<Pagamento> PAGAMENTOS = new ArrayList<>();
 
-    public void registra(List<Pagamento> ps) {
-    for (int i = 0; i < ps.size(); i++) {
-        Pagamento p = ps.get(i);
-        if (p.getTipo().equals(Tipo.CREDITO)) { p.setValor(p.getValor() * 1.02);
-            psr.add(p); System.out.println("Pagamento realizado " + p);
-        } if (p.getTipo().equals(Tipo.DEBITO)) { p.setValor(p.getValor() * 1.001);
-            psr.add(p); System.out.println("Pagamento realizado " + p);
-        } if (p.getTipo().equals(Tipo.DINHEIRO)) { psr.add(p); System.out.println("Pagamento realizado " + p); }
-    } if (!psr.isEmpty()) { System.out.println("Todos os pagamentos");
-    for (int i = 0; i < psr.size(); i++) {
-        System.out.println(psr.get(i));
+    public void registra(List<Pagamento> pagamentos) {
+        for (Pagamento pagamento : pagamentos) {
+            verificaTipo(pagamento);
+            salva(pagamento);
+        }
     }
-    } else { System.out.println("Não temos pagamentos"); }
+
+    private void verificaTipo(Pagamento pagamento) {
+        if (pagamento.getTipo().equals(Tipo.CREDITO)) {
+            double valorComAcrescimo = pagamento.getValor() * 1.02;
+            pagamento.setValor(valorComAcrescimo);
+        }
+
+        if (pagamento.getTipo().equals(Tipo.DEBITO)) {
+            double valorComAcrescimo = pagamento.getValor() * 1.001;
+            pagamento.setValor(valorComAcrescimo);
+        }
+    }
+
+    private void salva(Pagamento pagamento) {
+        PAGAMENTOS.add(pagamento);
+        System.out.println("Pagamento realizado " + pagamento);
+    }
+
+    public void exibeEfetuados() {
+        if (PAGAMENTOS.isEmpty()) {
+            System.out.println("Não tem pagamentos registrados");
+        } else {
+            System.out.println("Todos os pagamentos");
+            for (Pagamento pagamentosRegistrado : PAGAMENTOS) {
+                System.out.println(pagamentosRegistrado);
+            }
+        }
     }
 
 }
